@@ -38,6 +38,7 @@ h1 {
 
 #rumble-on-button-press-area {
     margin-bottom: 10px;
+    text-align: center;
 }
 
 .loader {
@@ -55,8 +56,34 @@ h1 {
     0% {
         transform: rotate(0deg);
     }
-    
+
     100% {
         transform: rotate(360deg);
     }
+}
+
+/* BUTTON GRID */
+
+#buttons {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(min-content, max-content));
+    grid-gap: 15px;
+    justify-content: center;
+    justify-items: start;
+}
+
+.button {
+    background-color: rgb(223, 222, 222);
+    height: 50px;
+    min-width: 50px;
+    display: flex;
+}
+
+.button-text-area {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.button-name {
+    color: grey;
 }
