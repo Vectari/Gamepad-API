@@ -24,10 +24,23 @@ function handleConnectDisconnect(event, connected) {
         controllerAreNotConnected.style.display = "none";
         controllerAreConnected.style.display = "block";
         createButtonLayout(gamepad.buttons);
+        createAxesLayout(gamepad.axes);
     } else {
         controllerIndex = null;
         controllerAreNotConnected.style.display = "block";
         controllerAreConnected.style.display = "none";        
+    }
+}
+
+function createAxesLayout(axes) {
+    const buttonsArea = document.getElementById("buttons");
+    for (let i = 0; i < axes.length; i++) {
+        buttonsArea.innerHTML +=    `<div id = axis-${i} class = "axis">
+                                        <div class = "axis-name">AXIS ${i}</div>
+                                        <div class = "axis-value">${axes[i].toFixed(
+                                            4
+                                        )}</div>
+                                    </div> `;
     }
 }
 
@@ -71,10 +84,71 @@ function updateButtonOnGrid(index, value) {
     buttonMeter.setAttribute("y", meterPosition);
 }
 
+function updateControllerButton(index, value) {
+    const button = document.getElementById(`controller-b${index}`);
+    const selectedButtonClass = "selected-button";
+
+    if (button) {
+        if(value > 0) {
+            button.classList.add(selectedButtonClass);
+            button.style.filter = `contrast(${value * 200}%)`;
+        } else {
+            button.classList.remove(selectedButtonClass);
+            button.style.filter = `contrast(100%)`;
+        }
+    }
+}
+
 function handleButtons(buttons) {
     for (let i = 0; i < buttons.length; i++) {
         const buttonValue = buttons[i].value;
         updateButtonOnGrid(i, buttonValue);
+        updateControllerButton(i, buttonValue);
+    }
+}
+
+function handleSticks(axes) {
+    updateAxesGrid(axes);
+    updateStick("controller-b10", axes[0], axes[1]);
+    updateStick("controller-b11", axes[2], axes[3]);
+}
+
+function updateAxesGrid(axes) {
+    for (let i = 0; i < axes.length; i++) {
+        const axis = document.querySelector(`#axis-${i} .axis-value`);
+        const value = axes[i];
+        // if (value > 0.06 || value < -0.06) {    // delete comment to set 'dead zone'
+            axis.innerHTML = value.toFixed(4);
+        // }
+        }
+}
+
+
+function updateStick(elementId, leftRightAxis, upDownAxis) {
+    const multiplier = 25;
+    const stickLeftRight = leftRightAxis * multiplier;
+    const stickUpDown = upDownAxis * multiplier;
+
+    const stick = document.getElementById(elementId);
+    const x = Number(stick.dataset.originalXPosition);
+    const y = Number(stick.dataset.originalYPosition);
+
+    stick.setAttribute("cx", x + stickLeftRight);
+    stick.setAttribute("cy", y + stickUpDown);
+}
+
+function handleRumble(gamepad) {
+    const rumbleOnButtonPress = document.getElementById("rumble-on-button-press");
+
+    if (rumbleOnButtonPress.checked) {
+        if (gamepad.buttons.some(button => button.value > 0)) {
+            gamepad.vibrationActuator.playEffect("dual-rumble", {
+                startDelay: 0,
+                duration: 25,
+                weakMagnitude: 1.0,
+                strongMagnitude: 1.0,
+            });
+        }
     }
 }
 
@@ -82,6 +156,8 @@ function gameLoop() {
 if (controllerIndex !== null) {
     const gamepad = navigator.getGamepads()[controllerIndex];
     handleButtons(gamepad.buttons);
+    handleSticks(gamepad.axes);
+    handleRumble(gamepad);
 }
     requestAnimationFrame(gameLoop);
 }

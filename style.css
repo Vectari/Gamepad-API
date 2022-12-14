@@ -87,3 +87,18 @@ h1 {
 .button-name {
     color: grey;
 }
+
+/* CONTROLLER  */
+
+.selected-button {
+    fill: rgb(231, 24, 24);
+}
+
+.axis-name {
+    color: grey;
+    font-weight: bolder;
+}
+
+.axis-value {
+    color: rgb(126, 54, 54);
+}
