@@ -119,7 +119,7 @@ function updateAxesGrid(axes) {
         const value = axes[i];
         // if (value > 0.06 || value < -0.06) {    // delete comment to set 'dead zone'
             axis.innerHTML = value.toFixed(4);
-        // }
+        // } 
         }
 }
 
@@ -152,12 +152,43 @@ function handleRumble(gamepad) {
     }
 }
 
+function handleStickOk(axes) {
+    for (let i = 0; i < axes.length; i++) {
+        const stickok = document.getElementById("stick-ok");
+        const valueaxes0 = axes[0];
+        const valueaxes1 = axes[1];
+        const valueaxes2 = axes[2];
+        const valueaxes3 = axes[3];
+        if (valueaxes0 > 0.16 || valueaxes0 < -0.16) {
+            stickok.innerHTML = `<div class="stick-not-ok">Stick 0 NOT OK</div>`;
+        } else {
+            stickok.innerHTML = "<div>Stick OK</div>";
+        }
+        if (valueaxes1 > 0.16 || valueaxes1 < -0.16) {
+            stickok.innerHTML = `<div class="stick-not-ok">Stick 1 NOT OK</div>`;
+        }
+        if (valueaxes2 > 0.16 || valueaxes2 < -0.16) {
+            stickok.innerHTML = `<div class="stick-not-ok">Stick 2 NOT OK</div>`;
+        }
+        if (valueaxes3 > 0.16 || valueaxes3 < -0.16) {
+            stickok.innerHTML = `<div class="stick-not-ok">Stick 3 NOT OK</div>`;
+        }
+        if ((valueaxes0 > 0.16 || valueaxes0 < -0.16) && (valueaxes1 > 0.16 || valueaxes1 < -0.16)) {
+            stickok.innerHTML = `<div class="stick-not-ok">Stick 0 and 1 NOT OK</div>`;
+        }
+        if ((valueaxes2 > 0.16 || valueaxes2 < -0.16) && (valueaxes3 > 0.16 || valueaxes3 < -0.16)) {
+            stickok.innerHTML = `<div class="stick-not-ok">Stick 2 and 3 NOT OK</div>`;
+        }
+    }
+}
+
 function gameLoop() {
 if (controllerIndex !== null) {
     const gamepad = navigator.getGamepads()[controllerIndex];
     handleButtons(gamepad.buttons);
     handleSticks(gamepad.axes);
     handleRumble(gamepad);
+    handleStickOk(gamepad.axes);
 }
     requestAnimationFrame(gameLoop);
 }

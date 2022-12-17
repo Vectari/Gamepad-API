@@ -88,6 +88,18 @@ h1 {
     color: grey;
 }
 
+#stick-ok {
+    text-align: center;
+    color: green;
+    font-weight: bolder;
+}
+
+.stick-not-ok {
+    text-align: center;
+    color: darkred;
+    font-weight: bolder;
+}
+
 /* CONTROLLER  */
 
 .selected-button {
