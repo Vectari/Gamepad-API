@@ -182,6 +182,54 @@ function handleStickOk(axes) {
     }
 }
 
+function handleStickOkHorizontalLeft(axes) {
+    for (let i = 0; i < axes.length; i++) {
+        const stickok = document.getElementById("HLX");
+        const valueaxes0 = axes[0];
+        if (valueaxes0 > 0.16 || valueaxes0 < -0.16) {
+            stickok.innerHTML = `<div class="stick-not-ok">NOT OK</div>`;
+        } else {
+            stickok.innerHTML = `<div id="stick-ok">OK</div>`;
+        }
+    }
+}
+
+function handleStickOkHorizontalRight(axes) {
+    for (let i = 0; i < axes.length; i++) {
+        const stickok = document.getElementById("HRX");
+        const valueaxes0 = axes[2];
+        if (valueaxes0 > 0.16 || valueaxes0 < -0.16) {
+            stickok.innerHTML = `<div class="stick-not-ok">NOT OK</div>`;
+        } else {
+            stickok.innerHTML = `<div id="stick-ok">OK</div>`;
+        }
+    }
+}
+
+function handleStickOkVerticalLeft(axes) {
+    for (let i = 0; i < axes.length; i++) {
+        const stickok = document.getElementById("VLY");
+        const valueaxes0 = axes[1];
+        if (valueaxes0 > 0.16 || valueaxes0 < -0.16) {
+            stickok.innerHTML = `<div class="stick-not-ok">NOT OK</div>`;
+        } else {
+            stickok.innerHTML = `<div id="stick-ok">OK</div>`;
+        }
+    }
+}
+
+function handleStickOkVerticalRight(axes) {
+    for (let i = 0; i < axes.length; i++) {
+        const stickok = document.getElementById("VRY");
+        const valueaxes0 = axes[3];
+        if (valueaxes0 > 0.16 || valueaxes0 < -0.16) {
+            stickok.innerHTML = `<div class="stick-not-ok">NOT OK</div>`;
+        } else {
+            stickok.innerHTML = `<div id="stick-ok">OK</div>`;
+        }
+    }
+}
+
 function gameLoop() {
 if (controllerIndex !== null) {
     const gamepad = navigator.getGamepads()[controllerIndex];
@@ -189,6 +237,10 @@ if (controllerIndex !== null) {
     handleSticks(gamepad.axes);
     handleRumble(gamepad);
     handleStickOk(gamepad.axes);
+    handleStickOkHorizontalLeft(gamepad.axes);
+    handleStickOkHorizontalRight(gamepad.axes);
+    handleStickOkVerticalLeft(gamepad.axes);
+    handleStickOkVerticalRight(gamepad.axes);
 }
     requestAnimationFrame(gameLoop);
 }
